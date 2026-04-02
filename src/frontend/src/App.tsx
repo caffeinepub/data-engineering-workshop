@@ -81,17 +81,16 @@ function HeroSection({ count }: { count: number }) {
           </span>
         </motion.div>
 
-        {/* Main headline */}
+        {/* Main headline — 2 lines */}
         <motion.h1
           variants={fadeUp}
           className="font-heading font-extrabold text-white leading-tight mx-auto max-w-3xl"
           style={{ fontSize: "clamp(2.4rem, 5.5vw, 4.2rem)" }}
         >
-          Build a 20LPA+{" "}
           <span className="block text-[#d4af37]">
-            Career in Data Engineering
+            Build a 20LPA+ Career in Data Engineering
           </span>
-          [In Just 90 Days]
+          <span className="block">[In Just 90 Days]</span>
         </motion.h1>
 
         {/* Subheadline */}
@@ -293,19 +292,19 @@ function ConsequencesSection() {
 // ─── VIDEO TESTIMONIALS ───────────────────────────────────────────────────────
 const VIDEO_TESTIMONIALS = [
   {
-    videoId: "YOUTUBE_ID_1",
-    name: "Rahul Kumar",
-    desc: "CS Graduate · Got interview call in 3 weeks",
+    videoId: "HGqo-I5XH3M",
+    name: "Himanshu Bhist",
+    desc: "Data Engineering Workshop Attendee",
   },
   {
-    videoId: "YOUTUBE_ID_2",
-    name: "Priya Sharma",
-    desc: "Data Analyst · Cleared interview in 4 weeks",
+    videoId: "P9BUU1VsXD0",
+    name: "Khushi Gupta",
+    desc: "Data Engineering Workshop Attendee",
   },
   {
-    videoId: "YOUTUBE_ID_3",
-    name: "Arjun Mehta",
-    desc: "Software Engineer · Joined paid course same day",
+    videoId: "xo-z995Ys4I",
+    name: "Abhipri",
+    desc: "Data Engineering Workshop Attendee",
   },
 ];
 
@@ -853,6 +852,7 @@ function RegistrationForm() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
+                    data-ocid="register.input"
                     className="bg-[#22253a] border-border text-foreground placeholder:text-[#4b5563] h-[52px] text-base rounded-[10px]"
                   />
                 </div>
@@ -919,6 +919,7 @@ function RegistrationForm() {
                 <Button
                   type="submit"
                   disabled={loading || !actor}
+                  data-ocid="register.submit_button"
                   className="w-full bg-orange-DEFAULT hover:bg-orange-hover text-white font-heading font-bold text-lg h-[56px] rounded-xl shadow-[0_4px_24px_rgba(249,115,22,0.4)] transition-all hover:scale-[1.02] mt-2"
                 >
                   {loading ? (
@@ -1117,6 +1118,20 @@ function StickyBottomBar() {
   );
 }
 
+// ─── FLOATING RESERVE SEAT BUTTON (TOP LEFT) ──────────────────────────────────
+function ReserveSeatNavLink() {
+  return (
+    <button
+      type="button"
+      onClick={scrollToRegister}
+      data-ocid="nav.primary_button"
+      className="fixed top-4 left-4 z-[99998] text-white text-xs sm:text-sm font-semibold bg-white/8 border border-white/20 px-3 sm:px-4 py-2 rounded-full transition-all hover:bg-[oklch(0.72_0.20_40/0.15)] hover:border-[oklch(0.72_0.20_40/0.5)] hover:text-[#d4af37] backdrop-blur-sm"
+    >
+      Reserve Seat →
+    </button>
+  );
+}
+
 // ─── FLOATING TESTIMONIALS LINK ───────────────────────────────────────────────
 function TestimonialsNavLink() {
   function handleClick() {
@@ -1128,6 +1143,7 @@ function TestimonialsNavLink() {
     <button
       type="button"
       onClick={handleClick}
+      data-ocid="nav.link"
       className="fixed top-4 right-4 z-[99998] text-white text-xs sm:text-sm font-semibold bg-white/8 border border-white/20 px-3 sm:px-4 py-2 rounded-full transition-all hover:bg-[oklch(0.72_0.20_40/0.15)] hover:border-[oklch(0.72_0.20_40/0.5)] hover:text-[#d4af37] backdrop-blur-sm"
     >
       Testimonials ↓
@@ -1176,7 +1192,8 @@ export default function App() {
     <div className="min-h-screen bg-background text-foreground">
       <Toaster richColors position="top-center" />
 
-      {/* Floating testimonials link */}
+      {/* Floating nav buttons */}
+      <ReserveSeatNavLink />
       <TestimonialsNavLink />
 
       {/* Top bar — no sticky header */}
