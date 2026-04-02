@@ -48,7 +48,7 @@ function TopBar() {
   return (
     <div className="w-full bg-[#0d0f1a] text-center py-6 pb-3.5 border-b border-orange-DEFAULT/25">
       <span className="inline-block border border-orange-DEFAULT/50 text-white font-heading font-bold text-xs tracking-[2px] uppercase px-7 py-2.5 rounded-full">
-        BIG DATA YATRA
+        🎙 BIG DATA YATRA
       </span>
     </div>
   );
@@ -697,7 +697,7 @@ const TRAINERS = [
     initials: "SJ",
     gradient: "linear-gradient(135deg, #3b6bff, #5b8dff)",
     photo:
-      "https://drive.google.com/thumbnail?id=1-924vS-wh5nSgUrQmPRpOA6dbFgCV1qC&sz=w400",
+      "https://drive.google.com/thumbnail?id=1_kF6JEPdqRTm9YnldfZ-0zPNmo8W9f4z&sz=w200",
   },
   {
     name: "Somesh Khatawe",
@@ -706,7 +706,7 @@ const TRAINERS = [
     initials: "SK",
     gradient: "linear-gradient(135deg, #f97316, #fb923c)",
     photo:
-      "https://drive.google.com/thumbnail?id=1gxnixMQPIEWAsXJ0OrBcMz4Bvn0lYNHq&sz=w400",
+      "https://drive.google.com/thumbnail?id=1gxnixMQPIEWAsXJ0OrBcMz4Bvn0lYNHq&sz=w200",
   },
 ];
 
@@ -785,7 +785,7 @@ function AuthoritySection() {
 
 // ─── GOOGLE APPS SCRIPT WEBHOOK ───────────────────────────────────────────────
 const GOOGLE_SHEET_WEBHOOK =
-  "https://script.google.com/macros/s/AKfycbw-z7GB4ZP6v6YzeP7FOGgyUhG474z2NbFyZjsXz-HhfPzKLamP1uhSFBWBi1nNxPOj/exec";
+  "https://script.google.com/macros/s/AKfycbyn6SZzzRZeN3Vq7W_Tk3TIjmgu7cexDUwyZXg4mJw3GhHANkUm5a1BMw2ARx86HgsU/exec";
 
 // ─── REGISTRATION FORM ────────────────────────────────────────────────────────
 function RegistrationForm() {
@@ -802,25 +802,14 @@ function RegistrationForm() {
     setError("");
     setLoading(true);
     try {
-      // Google Apps Script does not support CORS, so we use no-cors.
-      // URL-encoded form data is the most reliable format for Apps Script doPost.
-      const params = new URLSearchParams({
-        name,
-        email,
-        phone,
-        role,
-        timestamp: new Date().toLocaleString("en-IN", {
-          timeZone: "Asia/Kolkata",
-        }),
-      });
+      // Send directly to Google Sheets via Apps Script webhook.
+      // Using no-cors mode to avoid CORS preflight issues with Google Apps Script.
       await fetch(GOOGLE_SHEET_WEBHOOK, {
         method: "POST",
         mode: "no-cors",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: params.toString(),
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({ name, email, phone, role }),
       });
-      // With no-cors we cannot read the response, but if fetch resolves without
-      // throwing then the request was sent successfully.
       setSuccess(true);
       toast.success("You're registered! See you at the workshop.");
     } catch (err) {
@@ -957,7 +946,7 @@ function RegistrationForm() {
                   type="submit"
                   disabled={loading}
                   data-ocid="register.submit_button"
-                  className="w-full bg-orange-DEFAULT hover:bg-orange-hover text-white font-heading font-bold text-base sm:text-lg h-auto min-h-[56px] py-3.5 px-4 rounded-xl shadow-[0_4px_24px_rgba(249,115,22,0.4)] transition-all hover:scale-[1.02] mt-2 whitespace-normal leading-snug"
+                  className="w-full bg-orange-DEFAULT hover:bg-orange-hover text-white font-heading font-bold text-lg h-[56px] rounded-xl shadow-[0_4px_24px_rgba(249,115,22,0.4)] transition-all hover:scale-[1.02] mt-2"
                 >
                   {loading ? (
                     <>
@@ -1009,7 +998,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Who are the trainers?",
-    a: "Shivam Jha is a Lead Data Engineer at Mastercard, and Somesh Khatawe is a Senior Data Engineer who has worked with Microsoft and GAP. Both are active industry practitioners — not just content creators.",
+    a: "Shivam Jha is a Lead Data Engineer at Mastercard, and Somesh Khatawe is a Senior Data Engineer who has worked at Microsoft and GAP. Both are active industry practitioners — not just content creators.",
   },
   {
     q: "What will I get after the workshop?",
@@ -1155,32 +1144,36 @@ function StickyBottomBar() {
   );
 }
 
-// ─── STICKY TOP NAV BAR ───────────────────────────────────────────────────────
-function StickyNavBar() {
-  function scrollToTestimonials() {
+// ─── FLOATING RESERVE SEAT BUTTON (TOP LEFT) ──────────────────────────────────
+function ReserveSeatNavLink() {
+  return (
+    <button
+      type="button"
+      onClick={scrollToRegister}
+      data-ocid="nav.primary_button"
+      className="fixed top-4 left-4 z-[99998] text-white text-xs sm:text-sm font-semibold bg-white/8 border border-white/20 px-3 sm:px-4 py-2 rounded-full transition-all hover:bg-[oklch(0.72_0.20_40/0.15)] hover:border-[oklch(0.72_0.20_40/0.5)] hover:text-[#d4af37] backdrop-blur-sm"
+    >
+      Reserve Seat →
+    </button>
+  );
+}
+
+// ─── FLOATING TESTIMONIALS LINK ───────────────────────────────────────────────
+function TestimonialsNavLink() {
+  function handleClick() {
     document
       .getElementById("testimonials")
       ?.scrollIntoView({ behavior: "smooth" });
   }
   return (
-    <div className="w-full bg-[#0a0c18] border-b border-white/[0.07] flex items-center justify-between px-4 py-2.5">
-      <button
-        type="button"
-        onClick={scrollToRegister}
-        data-ocid="nav.primary_button"
-        className="text-white text-xs sm:text-sm font-semibold bg-white/8 border border-white/20 px-3 sm:px-4 py-1.5 rounded-full transition-all hover:bg-[oklch(0.72_0.20_40/0.15)] hover:border-[oklch(0.72_0.20_40/0.5)] hover:text-[#d4af37] backdrop-blur-sm"
-      >
-        Reserve Seat →
-      </button>
-      <button
-        type="button"
-        onClick={scrollToTestimonials}
-        data-ocid="nav.link"
-        className="text-white text-xs sm:text-sm font-semibold bg-white/8 border border-white/20 px-3 sm:px-4 py-1.5 rounded-full transition-all hover:bg-[oklch(0.72_0.20_40/0.15)] hover:border-[oklch(0.72_0.20_40/0.5)] hover:text-[#d4af37] backdrop-blur-sm"
-      >
-        Testimonials ↓
-      </button>
-    </div>
+    <button
+      type="button"
+      onClick={handleClick}
+      data-ocid="nav.link"
+      className="fixed top-4 right-4 z-[99998] text-white text-xs sm:text-sm font-semibold bg-white/8 border border-white/20 px-3 sm:px-4 py-2 rounded-full transition-all hover:bg-[oklch(0.72_0.20_40/0.15)] hover:border-[oklch(0.72_0.20_40/0.5)] hover:text-[#d4af37] backdrop-blur-sm"
+    >
+      Testimonials ↓
+    </button>
   );
 }
 
@@ -1213,10 +1206,11 @@ export default function App() {
     <div className="min-h-screen bg-background text-foreground">
       <Toaster richColors position="top-center" />
 
-      {/* Sticky top nav bar */}
-      <StickyNavBar />
+      {/* Floating nav buttons */}
+      <ReserveSeatNavLink />
+      <TestimonialsNavLink />
 
-      {/* Top bar */}
+      {/* Top bar — no sticky header */}
       <TopBar />
 
       <main>
