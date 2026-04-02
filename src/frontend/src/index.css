@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+    /* Dark navy theme */
+    --background: 0.13 0.035 264;
+    --foreground: 0.97 0.005 264;
+    --card: 0.17 0.04 264;
+    --card-foreground: 0.97 0.005 264;
+    --popover: 0.17 0.04 264;
+    --popover-foreground: 0.97 0.005 264;
+    /* Primary = electric blue */
+    --primary: 0.57 0.22 264;
+    --primary-foreground: 0.99 0 0;
+    /* Secondary = muted navy */
+    --secondary: 0.22 0.04 264;
+    --secondary-foreground: 0.97 0.005 264;
+    --muted: 0.22 0.03 264;
+    --muted-foreground: 0.65 0.015 264;
+    /* Accent = orange */
+    --accent: 0.72 0.2 40;
+    --accent-foreground: 0.99 0 0;
+    --destructive: 0.6 0.22 25;
+    --destructive-foreground: 0.99 0 0;
+    --border: 0.28 0.04 264;
+    --input: 0.22 0.04 264;
+    --ring: 0.57 0.22 264;
+    --chart-1: 0.57 0.22 264;
+    --chart-2: 0.72 0.2 40;
+    --chart-3: 0.65 0.18 150;
+    --chart-4: 0.8 0.15 80;
+    --chart-5: 0.6 0.22 25;
+    --sidebar: 0.17 0.04 264;
+    --sidebar-foreground: 0.97 0.005 264;
+    --sidebar-primary: 0.57 0.22 264;
+    --sidebar-primary-foreground: 0.99 0 0;
+    --sidebar-accent: 0.22 0.04 264;
+    --sidebar-accent-foreground: 0.97 0.005 264;
+    --sidebar-border: 0.28 0.04 264;
+    --sidebar-ring: 0.57 0.22 264;
+    /* Custom tokens */
+    --cta-orange: 0.72 0.2 40;
+    --electric-blue: 0.57 0.22 264;
+    --navy-card: 0.17 0.04 264;
+    --navy-dark: 0.1 0.03 264;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Plus Jakarta Sans", sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Bricolage Grotesque", sans-serif;
+  }
+}
