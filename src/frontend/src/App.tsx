@@ -697,6 +697,8 @@ const TRAINERS = [
     desc: "Real industry practitioner with years of hands-on experience building large-scale data pipelines at one of the world's top financial companies.",
     initials: "SJ",
     gradient: "linear-gradient(135deg, #3b6bff, #5b8dff)",
+    photo:
+      "https://drive.google.com/thumbnail?id=1_kF6JEPdqRTm9YnldfZ-0zPNmo8W9f4z&sz=w200",
   },
   {
     name: "Somesh Khatawe",
@@ -704,6 +706,8 @@ const TRAINERS = [
     desc: "Worked on real projects at Microsoft and GAP. Brings practical, battle-tested knowledge from leading global enterprises directly to this workshop.",
     initials: "SK",
     gradient: "linear-gradient(135deg, #f97316, #fb923c)",
+    photo:
+      "https://drive.google.com/thumbnail?id=1gxnixMQPIEWAsXJ0OrBcMz4Bvn0lYNHq&sz=w200",
   },
 ];
 
@@ -735,11 +739,25 @@ function AuthoritySection() {
                 className="bg-card border border-border rounded-2xl p-7 space-y-4"
               >
                 <div className="flex items-center gap-4">
-                  <div
-                    className="w-[60px] h-[60px] rounded-full flex items-center justify-center text-white font-heading font-extrabold text-xl shrink-0"
-                    style={{ background: trainer.gradient }}
-                  >
-                    {trainer.initials}
+                  <div className="w-[60px] h-[60px] rounded-full shrink-0 overflow-hidden">
+                    <img
+                      src={trainer.photo}
+                      alt={trainer.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        target.style.display = "none";
+                        const fallback =
+                          target.nextElementSibling as HTMLElement;
+                        if (fallback) fallback.style.display = "flex";
+                      }}
+                    />
+                    <div
+                      className="w-full h-full rounded-full items-center justify-center text-white font-heading font-extrabold text-xl"
+                      style={{ background: trainer.gradient, display: "none" }}
+                    >
+                      {trainer.initials}
+                    </div>
                   </div>
                   <div>
                     <h3 className="font-heading font-extrabold text-foreground text-xl">
@@ -766,6 +784,10 @@ function AuthoritySection() {
   );
 }
 
+// ─── GOOGLE APPS SCRIPT WEBHOOK ───────────────────────────────────────────────
+const GOOGLE_SHEET_WEBHOOK =
+  "https://script.google.com/macros/s/AKfycbyn6SZzzRZeN3Vq7W_Tk3TIjmgu7cexDUwyZXg4mJw3GhHANkUm5a1BMw2ARx86HgsU/exec";
+
 // ─── REGISTRATION FORM ────────────────────────────────────────────────────────
 function RegistrationForm() {
   const { actor } = useActor();
@@ -779,11 +801,17 @@ function RegistrationForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!actor) return;
     setError("");
     setLoading(true);
     try {
-      await actor.register(name, email, phone);
+      // Send directly to Google Sheets via Apps Script webhook.
+      // Using no-cors mode to avoid CORS preflight issues with Google Apps Script.
+      await fetch(GOOGLE_SHEET_WEBHOOK, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({ name, email, phone, role }),
+      });
       setSuccess(true);
       toast.success("You're registered! See you at the workshop.");
     } catch (err) {
