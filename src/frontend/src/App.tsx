@@ -22,9 +22,8 @@ import {
 } from "lucide-react";
 import type { Variants } from "motion/react";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
-import { useActor } from "./hooks/useActor";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -790,7 +789,6 @@ const GOOGLE_SHEET_WEBHOOK =
 
 // ─── REGISTRATION FORM ────────────────────────────────────────────────────────
 function RegistrationForm() {
-  const { actor } = useActor();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -946,7 +944,7 @@ function RegistrationForm() {
 
                 <Button
                   type="submit"
-                  disabled={loading || !actor}
+                  disabled={loading}
                   data-ocid="register.submit_button"
                   className="w-full bg-orange-DEFAULT hover:bg-orange-hover text-white font-heading font-bold text-lg h-[56px] rounded-xl shadow-[0_4px_24px_rgba(249,115,22,0.4)] transition-all hover:scale-[1.02] mt-2"
                 >
@@ -1202,19 +1200,7 @@ function Footer() {
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
 export default function App() {
-  const { actor } = useActor();
-  const [regCount, setRegCount] = useState(3000);
-
-  useEffect(() => {
-    if (!actor) return;
-    actor
-      .getRegistrationCount()
-      .then((count) => {
-        const n = Number(count);
-        setRegCount(Math.max(n, 3000));
-      })
-      .catch(() => {});
-  }, [actor]);
+  const [regCount] = useState(3000);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
